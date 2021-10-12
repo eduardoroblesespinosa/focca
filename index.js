@@ -1,9 +1,9 @@
 class Foccaland{parent;works;tween;constructor(){this.parent=document.querySelector('.works');this.works=window.foccalandWorks;this.isMobile=window.innerWidth<768;this.init();}
-isImage(url){return url.match(/\.(jpeg|jpg|gif|png|webp|mp4)$/)!==null;}
+isImage(url){return url.match(/\.(jpeg|jpg|gif|png|webp)$/)!==null;}
 createImage(src){const img=document.createElement('img');img.src=src;img.classList.add('works-image');img.loading='lazy';return img;}
 createVideo(src){const extension=src.split('.')[1];const video=document.createElement('video');video.loop=true;video.muted=true;video.playsInline='playsinline';video.classList.add('works-video');if(this.isMobile){video.autoplay=true;}
 const source=document.createElement('source');source.setAttribute('type','video/'+extension);source.src=src;video.appendChild(source);video.addEventListener('mouseenter',function(){video.play();video.playbackRate=1;if(video.tween){video.tween.kill();}});video.addEventListener('mouseleave',function(){if(this.isMobile){return;}
-const playback={speed:1};video.tween=gsap.to(playback,{duration:3,speed:0,ease:"power2.inOut",onUpdate(){if(playback.speed<=0.0624){video.playbackRate=playback.speed.toFixed(1);}else{video.playbackRate=playback.speed;}},onComplete(){video.pause();}});});return video;}
+const playback={speed:1};video.tween=gsap.to(playback,{duration:3,speed:0,ease:"power2.inOut",onUpdate(){if(playback.speed<=0.0624){video.playbackRate=playback.speed.toFixed(1);}else{video.playbackRate=playback.speed;}},onComplete(){video.play();}});});return video;}
 createWork(work){const asset=this.isImage(work.src)?this.createImage(work.src):this.createVideo(work.src);const node=document.createElement('article');node.classList.add('works-item');if(work.title){const titleNode=document.createElement('h4');titleNode.classList.add('works-item__title');const text=document.createTextNode(work.title);titleNode.appendChild(text);node.appendChild(titleNode);}
 node.appendChild(asset);return node;}
 createGroup(group){const floater=document.createElement('div');floater.classList.add('works-floater');const grid=document.createElement('div');grid.classList.add('works-grid');group.forEach((work)=>{grid.appendChild(this.createWork(work));});floater.appendChild(grid);this.parent.appendChild(floater);}
